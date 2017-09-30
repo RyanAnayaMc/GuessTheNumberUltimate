@@ -153,4 +153,4 @@ public class GuessingGameUltimate {
 		willUserPlayAgainBoolean = (willUserPlayAgainInteger == 0);
 	} //Closes the loop
 	}
-}
+} //End of program
