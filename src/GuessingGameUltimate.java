@@ -1,5 +1,8 @@
-//Filename GuessingGameUltimate.java
-//Licensed under GNU GPL v3
+//  Filename GuessingGameUltimate.java
+//  Licensed under GNU GPL v3
+// CHANGELOG:
+//  V1.1.0 [ Oct02-2017] - Added exception handlers to Integer.parseInt() and Double.parseDouble() operations
+//  V1.0.0 [Sept30-2017] - Initial Release
 import javax.swing.JOptionPane;
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -34,7 +37,13 @@ public class GuessingGameUltimate {
 			while (isGameOptionAcceptable == false) {
 				userDifficultyOptionString = JOptionPane.showInputDialog(null, "What difficulty do you want?\nPlease enter an integer from 5 to 100 for best results.\nDo not enter a number less than or equal to zero.\nThis number specifies the maximum possible value.\nFor example, 9 will make numbers from 1 to 9 possible.\n100 will make 1 to 100 possible.\nEven 2158564218 can be used, but it's not suggested.",
 						title, JOptionPane.QUESTION_MESSAGE); //Prompts user for a gamemode type
-				userDifficultyOptionInteger = Integer.parseInt(userDifficultyOptionString); //Parses the gamemode string to an integer
+				try {
+					userDifficultyOptionInteger = Integer.parseInt(userDifficultyOptionString); //Parses the gamemode string to an integer
+				} 
+				catch (NumberFormatException integerParseError) {
+					JOptionPane.showMessageDialog(null, "Critical Error\nYou did not input an integer. Please input an integer value.\nError details:\n" + integerParseError.getMessage(), title, JOptionPane.ERROR_MESSAGE);
+				}
+				//Exception handlers for failed integer parse
 				isGameOptionAcceptable = (userDifficultyOptionInteger > 0); //Checks to see if user inputted a positive value
 				if (isGameOptionAcceptable == false) {
 					JOptionPane.showMessageDialog(null, "What are you, stupid? You input " + userDifficultyOptionInteger + ".\nThat's a negative number you moron!\nPick another number!", title, JOptionPane.ERROR_MESSAGE);
@@ -47,7 +56,13 @@ public class GuessingGameUltimate {
 		randomizedInteger = 1 + (int) (Math.random() * userDifficultyOptionInteger); //Randomizes an integer
 		while (isResponseAcceptable == false) {
 			numberGuessString = JOptionPane.showInputDialog(null, "Input a number from 1 to " + userDifficultyOptionInteger, title, JOptionPane.QUESTION_MESSAGE);
-			numberGuessInteger = Integer.parseInt(numberGuessString); //Parses the user's guess
+			try {
+				numberGuessInteger = Integer.parseInt(numberGuessString); //Parses the user's guess
+			}
+			catch (NumberFormatException integerParseError) {
+				JOptionPane.showMessageDialog(null, "Critical Error\nYou did not input an integer. Please input an integer value.\nError details:\n" + integerParseError.getMessage(), title, JOptionPane.ERROR_MESSAGE);
+			}
+			//Exception handlers for failed integer parse
 			isResponseAcceptable = (numberGuessInteger >= 1 && numberGuessInteger <= userDifficultyOptionInteger); //Checks to see if the response is between 1 and the user's difficulty
 			if (isResponseAcceptable == false) {
 				JOptionPane.showMessageDialog(null, "What are you, stupid?\nYou input " + numberGuessInteger + "!\nThat is not in between 1 and " + userDifficultyOptionInteger + "!\n Try again!",
@@ -56,8 +71,7 @@ public class GuessingGameUltimate {
 			else if (isResponseAcceptable == true) {
 				break;
 			}
-		}
-		
+		}	
 		isGuessCorrect = (numberGuessInteger == randomizedInteger); //Compares the user's guess to the random integer
 		if (isGuessCorrect == true) {
 			JOptionPane.showMessageDialog(null, "Great job!\nYou guessed " + numberGuessInteger + ", which is correct!\nAs a reward, \"Rocket Man\" Kim Jung Un will\nnot fire a nuke at the United States!",
@@ -111,10 +125,22 @@ public class GuessingGameUltimate {
 			while (isGameOptionAcceptable == false) {
 				userDifficultyOptionString = JOptionPane.showInputDialog(null, "What difficulty do you want?\nPlease enter an integer from 5 to 20 for best results.\nDo not enter a number less than or equal to zero.\nThis number specifies the maximum possible value.\nFor example, 9 will make numbers from 1 to 9 possible.\n100 will make 1 to 100 possible.\nEven 2158564218 can be used, but it's not suggested.",
 						title, JOptionPane.QUESTION_MESSAGE); //Prompts user for a gamemode type
-				userDifficultyOptionInteger = Integer.parseInt(userDifficultyOptionString); //Parses difficulty
+				try {
+					userDifficultyOptionInteger = Integer.parseInt(userDifficultyOptionString); //Parses difficulty
+				}
+				catch (NumberFormatException integerParseError) {
+					JOptionPane.showMessageDialog(null, "Critical Error\nYou did not input an integer. Please input an integer value.\nError details:\n" + integerParseError.getMessage(), title, JOptionPane.ERROR_MESSAGE);
+				}
+				//Exception handlers for failed integer parse
 				userDifficultyOptionString = JOptionPane.showInputDialog(null, "How many decimal places do you want?\nPlease enter an positive nonzero integer.",
 						title, JOptionPane.QUESTION_MESSAGE); //Prompts user decimal places
-				decimalPlaces = Integer.parseInt(userDifficultyOptionString); //Parses decimal places
+				try {
+					decimalPlaces = Integer.parseInt(userDifficultyOptionString); //Parses decimal places
+				} 
+				catch (NumberFormatException integerParseError) {
+					JOptionPane.showMessageDialog(null, "Critical Error\nYou did not input an integer. Please input an integer value.\nError details:\n" + integerParseError.getMessage(), title, JOptionPane.ERROR_MESSAGE);
+				}
+				//Exception handlers for failed integer parse
 				isGameOptionAcceptable = (userDifficultyOptionInteger > 0 && decimalPlaces > 0);
 				if (isGameOptionAcceptable == true) {
 					break;
@@ -122,16 +148,27 @@ public class GuessingGameUltimate {
 				else if (isGameOptionAcceptable == false) {
 					JOptionPane.showMessageDialog(null, "What are you, stupid? One of your numbers are bad!\nGo back and fix it you moron!", title, JOptionPane.ERROR_MESSAGE);
 					}
-			}
-			
+			}	
 			randomizedDecimal = 1 + (Math.random() * userDifficultyOptionInteger); //randomizes a decimal
 			DecimalFormat specificSpaces = new DecimalFormat();
 			specificSpaces.setMinimumFractionDigits(decimalPlaces);
 			specificSpaces.setMaximumFractionDigits(decimalPlaces);
+			try {
 			randomizedDecimalWithSpecificPlaces = Double.parseDouble(specificSpaces.format(randomizedDecimal));
+			} 
+			catch (NumberFormatException doubleParseError) {
+				JOptionPane.showMessageDialog(null, "Critical Error\nYou did not input a valid decimal. Please input a valid decimal value.\nError details:\n" + doubleParseError.getMessage(), title, JOptionPane.ERROR_MESSAGE);
+			}
+			//Exception handlers for failed double parse
 			while (isResponseAcceptable == false) {
 				numberGuessString = JOptionPane.showInputDialog(null, "Input a decimal value from 1 to " + userDifficultyOptionInteger, title, JOptionPane.QUESTION_MESSAGE);
-				numberGuessDecimal = Double.parseDouble(specificSpaces.format(Double.parseDouble(numberGuessString)));
+				try {
+					numberGuessDecimal = Double.parseDouble(specificSpaces.format(Double.parseDouble(numberGuessString)));
+				} 
+				catch (NumberFormatException doubleParseError) {
+					JOptionPane.showMessageDialog(null, "Critical Error\nYou did not input a valid decimal. Please input a valid decimal value.\nError details:\n" + doubleParseError.getMessage(), title, JOptionPane.ERROR_MESSAGE);
+				}
+				//Exception handlers for failed double parse
 				isResponseAcceptable = (numberGuessDecimal > 0 && numberGuessDecimal < userDifficultyOptionInteger);
 				if (isResponseAcceptable == true) {
 					break;
@@ -153,4 +190,4 @@ public class GuessingGameUltimate {
 		willUserPlayAgainBoolean = (willUserPlayAgainInteger == 0);
 	} //Closes the loop
 	}
-} //End of program
+}
